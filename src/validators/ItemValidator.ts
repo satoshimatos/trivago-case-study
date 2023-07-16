@@ -16,17 +16,28 @@ const forbiddenNameKeywords = [
     'Website'
 ]
 
-export const exampleValidator = [
-    body('name').notEmpty().isString().isLength({ min: 10, max: 255 }).custom(value => {
-        if (forbiddenNameKeywords.includes(value)) {
-            throw new Error('Invalid value');
-        }
-        return true;
-    }),
-    body('rating').isInt({ min: 0, max: 5 }),
-    body('category').isIn(acceptedCategories).withMessage('The value for field "category" is invalid'),
-    body('image').isURL(),
-    body('reputation').toInt().isInt({ min: 0, max: 1000 }).withMessage('Value must be an integer between 0 and 1000'),
-    body('price').notEmpty().isInt(),
-    body('availability').notEmpty().isInt()
+export const itemValidator = [
+    body('name')
+        .isString()
+        .isLength({ min: 10, max: 255 }).withMessage("The value must be between 10 and 255 characters long")
+        .custom(value => {
+            forbiddenNameKeywords.filter(word => {
+                if (value.toString().toLowerCase().includes(word.toLowerCase())) {
+                    throw new Error("The following words: 'Free', 'Offer', 'Book', and 'Website' are not accepted");
+                }
+            }) 
+            return true;
+        }),
+    body('rating')
+        .isInt({ min: 0, max: 5 }).withMessage("The value must be an integer between 0 and 5"),
+    body('category')
+        .isIn(acceptedCategories).withMessage("The value must be one of the following: 'hotel', 'alternative', 'hostel', 'lodge', 'resort', 'guesthouse'"),
+    body('image')
+        .isURL().withMessage("Value must be a valid URL"),
+    body('reputation')
+        .isInt({ min: 0, max: 1000 }).withMessage('Value must be an integer between 0 and 1000'),
+    body('price')
+        .isInt().withMessage("Value must be an integer"),
+    body('availability')
+        .isInt().withMessage("Value must be an integer")
 ];

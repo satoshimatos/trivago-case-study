@@ -8,7 +8,7 @@ export const getList = async () : Promise<Items[] | null> => {
 }
 
 export const addItem = async (body: string) : Promise<string> => {
-    let itemRepository = new ItemRepository(body)
+    let itemRepository = new ItemRepository()
     // let result = await itemRepository.createItem()
     return "a"
 }

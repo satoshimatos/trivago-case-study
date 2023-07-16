@@ -1,4 +1,6 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response } from 'express'
+import { itemValidator } from '../validators/ItemValidator'
+import { validationResult } from 'express-validator'
 
 const itemController = require('../controllers/ItemController')
 
@@ -9,7 +11,12 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(200).json({'items': result})
 })
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', itemValidator, async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    console.log(req)
     try {
         let result = await itemController.addItem(req.body)
         res.status(201).json({'body': result})

@@ -36,4 +36,48 @@ export class ItemRepository {
         await AppDataSource.destroy()
         return true
     }
+
+    updateItem = async (
+        item_id: number,
+        name: string,
+        category: number,
+        image: string,
+        reputation: number,
+        reputation_badge: string,
+        price: number,
+        availability: number,
+        location: Locations
+    ) => {
+        await AppDataSource.initialize()
+        await AppDataSource.manager
+            .createQueryBuilder(Items, "item")
+            .update()
+            .where("item_id = :id", { id: item_id })
+            .set({
+                name: name,
+                category: category,
+                image: image,
+                reputation: reputation,
+                reputation_badge: reputation_badge,
+                price: price,
+                availability: availability,
+                location: location
+            })
+            .execute()
+        await AppDataSource.destroy()
+        return true
+    }
+
+    deleteItem = async (
+        item_id: number
+    ) => {
+        await AppDataSource.initialize()
+        await AppDataSource.manager
+        .createQueryBuilder(Items, "item")
+        .delete()
+        .from(Items)
+        .where("item_id = :id", {id: item_id})
+        .execute()
+        await AppDataSource.destroy()
+    }
 }
