@@ -41,5 +41,5 @@ export const itemValidator = [
     body('availability')
         .isInt().withMessage("Value must be an integer"),
     body('location')
-        .isInt().withMessage("Value must be an integer")
+        .isObject().withMessage("Value must be a valid object")
 ]
