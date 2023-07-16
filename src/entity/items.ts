@@ -33,5 +33,5 @@ export class Items {
 
     @ManyToOne(() => Locations)
     @JoinColumn({ name: 'location_id' })
-    location: Locations;
+    location: Locations
 }

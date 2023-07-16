@@ -1,23 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
-@Entity('locations')
+@Entity('location')
 
 export class Locations {
     @PrimaryGeneratedColumn()
-    location_id: number;
+    location_id: number
 
     @Column()
-    city: string;
+    city: string
 
     @Column()
-    state: string;
+    state: string
 
     @Column()
-    country: string;
+    country: string
 
     @Column()
-    zip_code: string;
+    zip_code: string
 
     @Column()
-    address: string;
+    address: string
 }
