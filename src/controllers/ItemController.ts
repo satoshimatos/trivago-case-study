@@ -12,10 +12,12 @@ export const addItem = async (body: object) : Promise<object> => {
     let itemRepository = new ItemRepository()
     let locationRepository = new LocationRepository()
     try {
-        body['location'] = await locationRepository.getOne(body['location'])
-        if (!body['location']) {
-            throw new Error('Invalid location id')
+        let location = null
+        let existingLocation = await locationRepository.getOne(body['location'])
+        if (!existingLocation) {
+            location = await locationRepository.createLocation(body['location'])
         }
+        body['location'] = location ? location['location_id'] : existingLocation['location_id']
         let result = await itemRepository.createItem(body)
         return {
             "success": true,
