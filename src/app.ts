@@ -1,15 +1,15 @@
-import express, { Application, Response } from 'express';
-import itemsRouter from './routes/item';
+import express, { Application, Response } from 'express'
+import itemsRouter from './routes/item'
 
-const app: Application = express();
+const app: Application = express()
 
-app.use(express.json());
+app.use(express.json())
 
-app.use('/items', itemsRouter);
+app.use('/items', itemsRouter)
 
-const port = process.env.PORT || 3333;
+const port = process.env.PORT || 3333
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+    console.log(`Server is running on port ${port}`)
+})
 
-export default app;
+export default app
