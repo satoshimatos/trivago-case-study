@@ -23,10 +23,10 @@ export const itemValidator = [
         .custom(value => {
             forbiddenNameKeywords.filter(word => {
                 if (value.toString().toLowerCase().includes(word.toLowerCase())) {
-                    throw new Error("The following words: 'Free', 'Offer', 'Book', and 'Website' are not accepted");
+                    throw new Error("The following words: 'Free', 'Offer', 'Book', and 'Website' are not accepted")
                 }
             }) 
-            return true;
+            return true
         }),
     body('rating')
         .isInt({ min: 0, max: 5 }).withMessage("The value must be an integer between 0 and 5"),
@@ -39,5 +39,7 @@ export const itemValidator = [
     body('price')
         .isInt().withMessage("Value must be an integer"),
     body('availability')
+        .isInt().withMessage("Value must be an integer"),
+    body('location')
         .isInt().withMessage("Value must be an integer")
-];
+]

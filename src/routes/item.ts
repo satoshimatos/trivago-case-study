@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator'
 
 const itemController = require('../controllers/ItemController')
 
-const router = Router();
+const router = Router()
 
 router.get('/', async (req: Request, res: Response) => {
     let result = await itemController.getList()
@@ -12,11 +12,10 @@ router.get('/', async (req: Request, res: Response) => {
 })
 
 router.post('/', itemValidator, async (req: Request, res: Response) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errors: errors.array() })
     }
-    console.log(req)
     try {
         let result = await itemController.addItem(req.body)
         res.status(201).json({'body': result})
@@ -29,4 +28,4 @@ router.get('/ping', (req: Request, res: Response) => {
     res.status(200).send('pong')
 })
 
-export default router;
+export default router
