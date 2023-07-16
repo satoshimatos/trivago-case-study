@@ -6,3 +6,9 @@ export const getList = async () : Promise<Items[] | null> => {
     let result = await itemRepository.getAll()
     return result
 }
+
+export const addItem = async (body: string) : Promise<string> => {
+    let itemRepository = new ItemRepository(body)
+    // let result = await itemRepository.createItem()
+    return "a"
+}
