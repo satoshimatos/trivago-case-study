@@ -12,6 +12,11 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(200).json({'items': result})
 })
 
+router.get('/:id', async (req: Request, res: Response) => {
+    let result = await itemController.getOne(req.params.id)
+    res.status(200).json({'item': result ?? 'Not found'})
+})
+
 router.post('/', locationValidator, itemValidator, async (req: Request, res: Response) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {

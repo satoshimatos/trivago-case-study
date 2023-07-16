@@ -8,6 +8,13 @@ export const getList = async () : Promise<Items[] | null> => {
     return result
 }
 
+export const getOne = async (item_id: number) : Promise<Items | null> => {
+    let itemRepository = new ItemRepository()
+    let result = await itemRepository.getOne(item_id)
+    return result
+}
+
+
 export const addItem = async (body: object) : Promise<object> => {
     let itemRepository = new ItemRepository()
     let locationRepository = new LocationRepository()

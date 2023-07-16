@@ -2,6 +2,7 @@ import "reflect-metadata"
 import { AppDataSource } from "../data-source"
 import { Items } from "../../entity/items"
 import { Locations } from "../../entity/locations"
+import { FindOneOptions } from "typeorm"
 
 export class ItemRepository {
     getAll = async () : Promise<Items[]> => {
@@ -10,6 +11,21 @@ export class ItemRepository {
             let items = await AppDataSource.manager.find(Items)
             await AppDataSource.destroy()
             return items
+        } catch (error) {
+            await AppDataSource.destroy()
+        }
+    }
+
+    getOne = async (item_id: number) : Promise<Items> => {
+        try {
+            await AppDataSource.initialize()
+            const options: FindOneOptions<Items> = {
+                where: { item_id: item_id },
+                relations: ['location']
+            };
+            let item = await AppDataSource.manager.findOne(Items, options)
+            await AppDataSource.destroy()
+            return item
         } catch (error) {
             await AppDataSource.destroy()
         }
