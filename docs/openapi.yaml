@@ -1,0 +1,632 @@
+openapi: 3.0.0
+info:
+  title: Trivago Test Case
+  version: 1.0.0
+  description: Trivago Test Case challenge as part of the hiring process
+paths:
+  /items:
+    get:
+      summary: Retrieves all items
+      tags:
+        - Item Management
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        item_id:
+                          type: integer
+                        name:
+                          type: string
+                        rating:
+                          type: integer
+                        category:
+                          type: string
+                        image:
+                          type: string
+                        reputation:
+                          type: integer
+                        reputation_badge:
+                          type: string
+                        price:
+                          type: integer
+                        availability:
+                          type: integer
+                        location:
+                          type: object
+                          properties:
+                            location_id:
+                              type: integer
+                            city:
+                              type: string
+                            state:
+                              type: string
+                            country:
+                              type: string
+                            zip_code:
+                              type: string
+                            address:
+                              type: string
+              example:
+                success: true
+                items:
+                  - item_id: 1
+                    name: "Example Name 1"
+                    rating: 5
+                    category: "hotel"
+                    image: "www.google.com"
+                    reputation: 800
+                    reputation_badge: "green"
+                    price: 2389
+                    availability: 0
+                    location:
+                      location_id: 1
+                      city: "Example City 1"
+                      state: "Example State"
+                      country: "Example Country"
+                      zip_code: "01234"
+                      address: "Example, Address"
+                  - item_id: 2
+                    name: "Example Name 2"
+                    rating: 3
+                    category: "alternative"
+                    image: "www.bing.com"
+                    reputation: 1000
+                    reputation_badge: "green"
+                    price: 100
+                    availability: 54
+                    location:
+                      location_id: 2
+                      city: "Example City 2"
+                      state: "Example State"
+                      country: "Example Country"
+                      zip_code: "01235"
+                      address: "Example Address"
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "Error message"
+    post:
+      summary: Create a new item
+      tags:
+        - Item Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 10
+                  not:
+                    pattern: 'Free|Offer|Book|Website'
+                rating:
+                  type: integer
+                  pattern: '^[1-5]$'
+                category:
+                  type: string
+                  enum:
+                    - "hotel"
+                    - "alternative"
+                    - "hostel"
+                    - "lodge"
+                    - "resort"
+                    - "guesthouse"
+                image:
+                  type: string
+                  format: uri
+                reputation:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+                price:
+                  type: integer
+                  minimum: 0
+                availability:
+                  type: integer
+                  minimum: 0
+                location:
+                  type: object
+                  properties:
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    country:
+                      type: string
+                    zip_code:
+                      type: string
+                      pattern: '^\d{5}$'
+                    address:
+                      type: string
+              required:
+                - name
+                - rating
+                - category
+                - image
+                - reputation
+                - price
+                - availability
+                - location
+      responses:
+        '201':
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      item_id:
+                        type: integer
+                      name:
+                        type: string
+                      rating:
+                        type: string
+                      category:
+                        type: string
+                      image:
+                        type: string
+                      reputation:
+                        type: integer
+                      price:
+                        type: integer
+                      availability:
+                        type: integer
+                      location:
+                        type: integer
+                      reputation_badge:
+                        type: string
+              example:
+                success: true
+                body:
+                  item_id: 1
+                  name: "Example Name 1"
+                  rating: 5
+                  category: "hotel"
+                  image: "www.google.com"
+                  reputation: 800
+                  reputation_badge: "green"
+                  price: 2389
+                  availability: 0
+                  location: 1
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "Error message"
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+              example:
+                success: false
+                errors: [
+                  {
+                    "type": "field",
+                    "value": "Free Hotel Name",
+                    "msg": "The following words: 'Free', 'Offer', 'Book', and 'Website' are not accepted",
+                    "path": "name",
+                    "location": "body"
+                  }
+                ]
+    put:
+      summary: Update an item (and location)
+      tags:
+        - Item Management
+      parameters:
+        - name: id
+          in: path
+          description: ID of the item to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 10
+                  not:
+                    pattern: 'Free|Offer|Book|Website'
+                rating:
+                  type: integer
+                  pattern: '^[1-5]$'
+                category:
+                  type: string
+                  enum:
+                    - "hotel"
+                    - "alternative"
+                    - "hostel"
+                    - "lodge"
+                    - "resort"
+                    - "guesthouse"
+                image:
+                  type: string
+                  format: uri
+                reputation:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+                price:
+                  type: integer
+                  minimum: 0
+                availability:
+                  type: integer
+                  minimum: 0
+                location:
+                  type: object
+                  properties:
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    country:
+                      type: string
+                    zip_code:
+                      type: string
+                      pattern: '^\d{5}$'
+                    address:
+                      type: string
+              required:
+                - name
+                - rating
+                - category
+                - image
+                - reputation
+                - price
+                - availability
+                - location
+      responses:
+        '200':
+          description: Item updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      item_id:
+                        type: integer
+                      name:
+                        type: string
+                      rating:
+                        type: string
+                      category:
+                        type: string
+                      image:
+                        type: string
+                      reputation:
+                        type: integer
+                      price:
+                        type: integer
+                      availability:
+                        type: integer
+                      location:
+                        type: integer
+                      reputation_badge:
+                        type: string
+              example:
+                success: true
+                body:
+                  item_id: 1
+                  name: "Example Name 1"
+                  rating: 5
+                  category: "hotel"
+                  image: "www.google.com"
+                  reputation: 800
+                  reputation_badge: "green"
+                  price: 2389
+                  availability: 0
+                  location: 1
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "Error message"
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                response: "Item not found"
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+              example:
+                success: false
+                errors: [
+                  {
+                    "type": "field",
+                    "value": "Free Hotel Name",
+                    "msg": "The following words: 'Free', 'Offer', 'Book', and 'Website' are not accepted",
+                    "path": "name",
+                    "location": "body"
+                  }
+                ]
+  /items/{id}:
+    get:
+      summary: Retrieve item by ID
+      tags:
+        - Item Management
+      parameters:
+        - name: id
+          in: path
+          description: ID of the item to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item_id:
+                    type: integer
+                  name:
+                    type: string
+                  rating:
+                    type: integer
+                  category:
+                    type: string
+                  image:
+                    type: string
+                  reputation:
+                    type: integer
+                  reputation_badge:
+                    type: string
+                  price:
+                    type: integer
+                  availability:
+                    type: integer
+                  location:
+                    type: object
+                    properties:
+                      location_id:
+                        type: integer
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      country:
+                        type: string
+                      zip_code:
+                        type: string
+                      address:
+                        type: string
+              example:
+                success: true
+                body:
+                  item_id: 1
+                  name: "Example Name 1"
+                  rating: 5
+                  category: "hotel"
+                  image: "www.google.com"
+                  reputation: 800
+                  reputation_badge: "green"
+                  price: 2389
+                  availability: 0
+                  location:
+                    location_id: 1
+                    city: "Example City 1"
+                    state: "Example State"
+                    country: "Example Country"
+                    zip_code: "01234"
+                    address: "Example, Address"
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "Error message"
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                response: "Item not found"
+    delete:
+      summary: Delete item by ID
+      tags:
+        - Item Management
+      parameters:
+        - name: id
+          in: path
+          description: ID of the item to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Successful delete
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "Error message"
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                response: "Item not found"
+  /booking/item/{id}:
+    post:
+      summary: Book available room by item ID
+      tags:
+        - Booking
+      parameters:
+        - name: id
+          in: path
+          description: ID of the item to book available room
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Room booked successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: true
+                message: "Room booked successfully"
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "Error message"
+        '403':
+          description: No availability
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "No rooms available for booking"
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                response: "Item not found"
