@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import { AppDataSource } from "../data-source"
 import { Items } from "../../entity/items"
+import { DeleteResult, FindOneOptions } from "typeorm"
 
 export class ItemRepository {
     getAll = async () : Promise<Items[]> => {
@@ -46,6 +47,17 @@ export class ItemRepository {
             await AppDataSource.manager.save(item)
             await AppDataSource.destroy()
             return item
+        } catch (error) {
+            await AppDataSource.destroy()
+        }
+    }
+
+    deleteItem = async (item_id: number) : Promise<DeleteResult> => {
+        try {
+            await AppDataSource.initialize()
+            let result = await AppDataSource.manager.delete(Items, { item_id: item_id })
+            await AppDataSource.destroy()
+            return result
         } catch (error) {
             await AppDataSource.destroy()
         }
