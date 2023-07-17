@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { AppDataSource } from "../data-source"
-import { Items } from "../../entity/TempItems"
+import { Items } from "../../entity/Items"
 import { DeleteResult, FindOneOptions } from "typeorm"
 
 export class ItemRepository {
