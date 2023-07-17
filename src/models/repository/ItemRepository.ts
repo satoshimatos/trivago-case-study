@@ -1,8 +1,6 @@
 import "reflect-metadata"
 import { AppDataSource } from "../data-source"
 import { Items } from "../../entity/items"
-import { Locations } from "../../entity/locations"
-import { FindOneOptions } from "typeorm"
 
 export class ItemRepository {
     getAll = async () : Promise<Items[]> => {
@@ -31,7 +29,7 @@ export class ItemRepository {
         }
     }
 
-    createItem = async (validatedItem: object) : Promise<object> => {
+    saveItem = async (validatedItem: object, item_id?: number) : Promise<object> => {
         try {
             await AppDataSource.initialize()
             let item = new Items()
@@ -44,6 +42,7 @@ export class ItemRepository {
             item.availability = validatedItem['availability']
             item.location = validatedItem['location']
             item.reputation_badge = this.generateReputationBadge(validatedItem['reputation'])
+            item.item_id = Number(item_id)
             await AppDataSource.manager.save(item)
             await AppDataSource.destroy()
             return item
