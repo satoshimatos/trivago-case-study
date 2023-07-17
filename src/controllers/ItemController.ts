@@ -1,4 +1,4 @@
-import { Items } from '../entity/Items'
+import { Items } from '../entity/TempItems'
 import { ItemRepository } from '../models/repository/ItemRepository'
 import { LocationRepository } from '../models/repository/LocationRepository'
 
