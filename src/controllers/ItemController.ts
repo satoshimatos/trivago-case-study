@@ -1,4 +1,4 @@
-import { Items } from '../entity/items'
+import { Items } from '../entity/Items'
 import { ItemRepository } from '../models/repository/ItemRepository'
 import { LocationRepository } from '../models/repository/LocationRepository'
 
@@ -37,20 +37,14 @@ export const saveItem = async (body: object, item_id: number = null) : Promise<o
     }
 }
 
-export const deleteItem = async (item_id: number) : Promise<object> => {
+export const deleteItem = async (item_id: number) : Promise<boolean> => {
     let itemRepository = new ItemRepository()
-    try {
-        await itemRepository.deleteItem(item_id)
-        return {
-            "success": true,
-            "message": `Item of id ${item_id} deleted successfully`
-        }
-    } catch (error) {
-        return {
-            "success": false,
-            "error": error.message 
-        }
+    let item = await getOne(item_id)
+    if (item == null) {
+        throw new Error(`Item of id ${item_id} does not exist`)
     }
+    await itemRepository.deleteItem(item['item_id'])
+    return true
 }
 
 const getLocation = async (locationObj: object) => {
