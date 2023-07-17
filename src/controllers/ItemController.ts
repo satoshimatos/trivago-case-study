@@ -14,18 +14,17 @@ export const getOne = async (item_id: number) : Promise<Items | null> => {
     return result
 }
 
-
-export const addItem = async (body: object) : Promise<object> => {
+export const saveItem = async (body: object, item_id: number = null) : Promise<object> => {
     let itemRepository = new ItemRepository()
-    let locationRepository = new LocationRepository()
     try {
-        let location = null
-        let existingLocation = await locationRepository.getOne(body['location'])
-        if (!existingLocation) {
-            location = await locationRepository.createLocation(body['location'])
+        if (item_id) {
+            let item = await getOne(item_id)
+            if (!item) {
+                throw new Error(`Item of id ${item_id} does not exist`)
+            }
         }
-        body['location'] = location ? location['location_id'] : existingLocation['location_id']
-        let result = await itemRepository.createItem(body)
+        body['location'] = await getLocation(body['location'])
+        let result = await itemRepository.saveItem(body, item_id)
         return {
             "success": true,
             "body": result
@@ -36,4 +35,14 @@ export const addItem = async (body: object) : Promise<object> => {
             "error": error.message 
         }
     }
+}
+
+const getLocation = async (locationObj: object) => {
+    let locationRepository = new LocationRepository()
+    let location = null
+    let existingLocation = await locationRepository.getOne(locationObj)
+    if (!existingLocation) {
+        location = await locationRepository.createLocation(locationObj)
+    }
+    return location ? location['location_id'] : existingLocation['location_id']
 }

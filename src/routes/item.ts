@@ -23,8 +23,21 @@ router.post('/', locationValidator, itemValidator, async (req: Request, res: Res
         return res.status(400).json({ errors: errors.array() })
     }
     try {
-        let result = await itemController.addItem(req.body)
+        let result = await itemController.saveItem(req.body)
         res.status(201).json({'body': result})
+    } catch (error) {
+        res.status(error.code ?? 500).send(error.message)
+    }
+})
+
+router.put('/:id', locationValidator, itemValidator, async (req: Request, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+    try {
+        let result = await itemController.saveItem(req.body, req.params.id)
+        res.status(200).json({'body': result})
     } catch (error) {
         res.status(error.code ?? 500).send(error.message)
     }
