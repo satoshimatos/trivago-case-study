@@ -43,6 +43,15 @@ router.put('/:id', locationValidator, itemValidator, async (req: Request, res: R
     }
 })
 
+router.delete('/:id', async (req: Request, res: Response) => {
+    try {
+        await itemController.deleteItem(req.params.id)
+        res.status(204).send()
+    } catch (error) {
+        res.status(error.code ?? 500).send(error.message)
+    }
+})
+
 router.get('/ping', (req: Request, res: Response) => {
     res.status(200).send('pong')
 })

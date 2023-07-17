@@ -37,6 +37,22 @@ export const saveItem = async (body: object, item_id: number = null) : Promise<o
     }
 }
 
+export const deleteItem = async (item_id: number) : Promise<object> => {
+    let itemRepository = new ItemRepository()
+    try {
+        await itemRepository.deleteItem(item_id)
+        return {
+            "success": true,
+            "message": `Item of id ${item_id} deleted successfully`
+        }
+    } catch (error) {
+        return {
+            "success": false,
+            "error": error.message 
+        }
+    }
+}
+
 const getLocation = async (locationObj: object) => {
     let locationRepository = new LocationRepository()
     let location = null
