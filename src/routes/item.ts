@@ -4,7 +4,6 @@ import { validationResult } from 'express-validator'
 import { locationValidator } from '../validators/LocationValidator'
 
 const itemController = require('../controllers/ItemController')
-
 const router = Router()
 
 router.get('/', async (req: Request, res: Response) => {
@@ -50,10 +49,6 @@ router.delete('/:id', async (req: Request, res: Response) => {
     } catch (error) {
         res.status(error.code ?? 400).send(error.message)
     }
-})
-
-router.get('/ping', (req: Request, res: Response) => {
-    res.status(200).send('pong')
 })
 
 export default router

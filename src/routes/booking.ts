@@ -4,7 +4,7 @@ const bookingController = require('../controllers/BookingController')
 
 const router = Router()
 
-router.post('/book/:id', async (req: Request, res: Response) => {
+router.post('/item/:id', async (req: Request, res: Response) => {
     try {
         await bookingController.book(req.params.id)
         res.status(200).json({
@@ -18,10 +18,5 @@ router.post('/book/:id', async (req: Request, res: Response) => {
         })
     }
 })
-
-router.get('/ping', (req: Request, res: Response) => {
-    res.status(200).send('pong')
-})
-
 
 export default router
