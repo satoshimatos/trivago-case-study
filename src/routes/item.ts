@@ -39,7 +39,7 @@ router.put('/:id', locationValidator, itemValidator, async (req: Request, res: R
         let result = await itemController.saveItem(req.body, req.params.id)
         res.status(200).json({'body': result})
     } catch (error) {
-        res.status(error.code ?? 500).send(error.message)
+        res.status(error.code ?? 400).send(error.message)
     }
 })
 
@@ -48,7 +48,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
         await itemController.deleteItem(req.params.id)
         res.status(204).send()
     } catch (error) {
-        res.status(error.code ?? 500).send(error.message)
+        res.status(error.code ?? 400).send(error.message)
     }
 })
 
