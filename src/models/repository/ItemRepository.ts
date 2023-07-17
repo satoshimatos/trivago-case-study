@@ -1,13 +1,16 @@
 import "reflect-metadata"
 import { AppDataSource } from "../data-source"
 import { Items } from "../../entity/Items"
-import { DeleteResult, FindOneOptions } from "typeorm"
+import { DeleteResult, FindManyOptions, FindOneOptions } from "typeorm"
 
 export class ItemRepository {
     getAll = async () : Promise<Items[]> => {
         try {
             await AppDataSource.initialize()
-            let items = await AppDataSource.manager.find(Items)
+            const options: FindManyOptions<Items> = {
+                relations: ['location']
+            };
+            let items = await AppDataSource.manager.find(Items, options)
             await AppDataSource.destroy()
             return items
         } catch (error) {

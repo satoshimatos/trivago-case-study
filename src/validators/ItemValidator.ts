@@ -39,7 +39,7 @@ export const itemValidator = [
     body('price')
         .isInt().withMessage("Value must be an integer"),
     body('availability')
-        .isInt().withMessage("Value must be an integer"),
+        .isInt({ min: 0 }).withMessage("Value must be an integer greater than zero"),
     body('location')
         .isObject().withMessage("Value must be a valid object")
 ]

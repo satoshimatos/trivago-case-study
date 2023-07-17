@@ -6,11 +6,30 @@ const router = Router()
 
 router.post('/item/:id', async (req: Request, res: Response) => {
     try {
-        await bookingController.book(req.params.id)
-        res.status(200).json({
-            "success": true,
-            "message": "Room booked successfully"
-        })
+        let response = await bookingController.book(req.params.id)
+        let responseBody = {}
+        switch (response) {
+            case 200:
+                responseBody = {
+                    "success": true,
+                    "message": "Room booked successfully"
+                }
+                break
+            case 403:
+                responseBody = {
+                    "success": false,
+                    "message": "No rooms available for booking"
+                }
+                break
+            case 404:
+                responseBody = {
+                    "success": false,
+                    "message": "Item not found"
+                }
+                break
+            default:
+        }
+        res.status(response).json(responseBody)
     } catch (error) {
         res.status(400).json({
             "success": false,

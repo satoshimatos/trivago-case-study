@@ -20,15 +20,12 @@ export const saveItem = async (body: object, item_id: number = null) : Promise<o
         if (item_id) {
             let item = await getOne(item_id)
             if (!item) {
-                throw new Error(`Item of id ${item_id} does not exist`)
+                return null
             }
         }
         body['location'] = await getLocation(body['location'])
         let result = await itemRepository.saveItem(body, item_id)
-        return {
-            "success": true,
-            "body": result
-        }
+        return result
     } catch (error) {
         return {
             "success": false,
@@ -41,7 +38,7 @@ export const deleteItem = async (item_id: number) : Promise<boolean> => {
     let itemRepository = new ItemRepository()
     let item = await getOne(item_id)
     if (item == null) {
-        throw new Error(`Item of id ${item_id} does not exist`)
+        return false
     }
     await itemRepository.deleteItem(item['item_id'])
     return true
