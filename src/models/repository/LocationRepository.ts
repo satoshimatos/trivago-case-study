@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { AppDataSource } from "../data-source"
-import { Locations } from "../../entity/locations"
+import { Locations } from "../../entity/TempLocations"
 
 export class LocationRepository {
     getOne = async (locationObj: object) : Promise<Locations> => {

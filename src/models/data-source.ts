@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Items } from "../entity/Items"
-import { Locations } from "../entity/locations"
+import { Items } from "../entity/TempItems"
+import { Locations } from "../entity/TempLocations"
 
 require('dotenv').config();
 

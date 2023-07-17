@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
-import { Locations } from "./locations"
+import { Locations } from "./TempLocations"
 
 @Entity('item')
 

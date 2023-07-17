@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
+
 @Entity('location')
 
 export class Locations {
