@@ -2,13 +2,26 @@ import { Router, Request, Response } from 'express'
 import { itemValidator } from '../validators/ItemValidator'
 import { validationResult } from 'express-validator'
 import { locationValidator } from '../validators/LocationValidator'
+import { getCache, setCache } from '../services/cacheModule'
 
 const itemController = require('../controllers/ItemController')
 const router = Router()
 
 router.get('/', async (req: Request, res: Response) => {
     try {
+        const cacheKey = JSON.stringify(req.query);
+        const cachedData = await getCache(cacheKey);
+
+        if (cachedData) {
+            console.log('Serving from cache');
+            return res.status(200).json({
+                success: true,
+                items: cachedData,
+            });
+        }
         let result = await itemController.getList(req.query)
+        setCache(cacheKey, result, 60);
+        console.log('Serving from server')
         res.status(200).json({
             "success": true,
             "items": result
@@ -23,8 +36,21 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/:id', async (req: Request, res: Response) => {
     try {
+        const cacheKey = JSON.stringify(req.query);
+        const cachedData = await getCache(cacheKey);
+
+        if (cachedData) {
+            console.log('Serving from cache');
+            return res.status(200).json({
+                success: true,
+                items: cachedData,
+            });
+        }
+
         let result = await itemController.getOne(req.params.id, req.query)
         if (result) {
+            setCache(cacheKey, result, 60);
+            console.log('Serving from server')
             res.status(200).json({
                 "success": true,
                 "body": result
