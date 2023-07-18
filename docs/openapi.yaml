@@ -673,7 +673,7 @@ paths:
                 response: "Item not found"
   /locations:
     get:
-      summary: Retrieves all items
+      summary: Retrieves all locations
       tags:
         - Location Management
       responses:
