@@ -4,6 +4,17 @@ import { Locations } from "../../entity/Locations"
 import { FindOneOptions } from "typeorm"
 
 export class LocationRepository {
+    getAll = async () : Promise<Locations[]> => {
+        try {
+            await AppDataSource.initialize()
+            let locations = await AppDataSource.manager.find(Locations)
+            await AppDataSource.destroy()
+            return locations
+        } catch (error) {
+            await AppDataSource.destroy()
+        }
+    }
+
     getOne = async (locationObj: object) : Promise<Locations> => {
         try {
             await AppDataSource.initialize()
