@@ -8,7 +8,7 @@ const router = Router()
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        let result = await itemController.getList()
+        let result = await itemController.getList(req.query)
         res.status(200).json({
             "success": true,
             "items": result
@@ -23,7 +23,7 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/:id', async (req: Request, res: Response) => {
     try {
-        let result = await itemController.getOne(req.params.id)
+        let result = await itemController.getOne(req.params.id, req.query)
         if (result) {
             res.status(200).json({
                 "success": true,

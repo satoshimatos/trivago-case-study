@@ -2,15 +2,15 @@ import { Items } from '../entity/Items'
 import { ItemRepository } from '../models/repository/ItemRepository'
 import { LocationRepository } from '../models/repository/LocationRepository'
 
-export const getList = async () : Promise<Items[] | null> => {
+export const getList = async (query?: object) : Promise<Items[] | null> => {
     let itemRepository = new ItemRepository()
-    let result = await itemRepository.getAll()
+    let result = await itemRepository.getAll(query)
     return result
 }
 
-export const getOne = async (item_id: number) : Promise<Items | null> => {
+export const getOne = async (item_id: number, query?: object) : Promise<Items | null> => {
     let itemRepository = new ItemRepository()
-    let result = await itemRepository.getOne(item_id)
+    let result = await itemRepository.getOne(item_id, query)
     return result
 }
 
