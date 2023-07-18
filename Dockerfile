@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     gnupg2 \
     postgresql \
+    redis-server \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js
@@ -22,11 +23,6 @@ COPY package*.json ./
 RUN npm install --production
 # Copy the rest of the application code
 COPY . .
-
-RUN echo "DB_HOST='db'" >> /app/.env
-RUN echo "DB_NAME='postgres'" >> /app/.env
-RUN echo "DB_USER='dockeruser'" >> /app/.env
-RUN echo "DB_PASSWORD='dockerpassword'" >> /app/.env
 
 EXPOSE 3333
 

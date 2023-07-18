@@ -32,17 +32,17 @@ Follow these steps to set up and run the project on your local machine:
 ```bash
 git clone git@github.com:satoshimatos/trivago-case-study.git
 ```
-2. Change into the project root directory and create a `.env` file:
-```
-DB_HOST='db'
-DB_NAME='postgres'
-DB_USER='dockeruser'
-DB_PASSWORD='dockerpassword'
-```
-The step above may be skipped because I decided it would be easier to just add these throwaway credentials to the Dockerfile. If it were really sensitive information, such as production credentials, I would take them out of the Dockerfile and require the use of the ``.env` file.
+2. Change into the project's root directory (where the Dockerfile and docker-compose.yml files are).
 
-3. Run docker-compose:
+3. Run docker-compose to build and up the images and containers:
 ```
 docker-compose up --build
 ```
 4. The app will be available at http://localhost:3333
+
+5. The endpoints can be found at `docs/openapi.yaml`
+
+## Personal Note
+
+- Because I decided to learn NodeJS and Express for this project, some of what I did could have been done in much better ways. Also, I had never used redis before and setting up docker on my Windows 10 PC wasn't exactly pleasing. With all that said, despite facing some difficulties, it was a great challenge and I definitely learned a lot from it. Regardless of the outcome, I already feel like a winner.
+- Should I have more time I would also add automated testing for endpoints and unit. Perhaps even an automated deployment to aws through gitlab, for example.
