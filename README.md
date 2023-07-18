@@ -45,3 +45,4 @@ docker-compose up --build
 ## Personal Note
 
 - Because I decided to learn NodeJS and Express for this project, some of what I did could have been done in much better ways. Also, I had never used redis before and setting up docker on my Windows 10 PC wasn't exactly pleasing. With all that said, despite facing some difficulties, it was a great challenge and I definitely learned a lot from it. Regardless of the outcome, I already feel like a winner.
+- Should I have more time I would also add automated testing for endpoints and unit. Perhaps even an automated deployment to aws through gitlab, for example.
