@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 
 # Update the system and install dependencies
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg2 \
@@ -19,15 +20,17 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install --production
-
 # Copy the rest of the application code
 COPY . .
 
-# Expose the necessary port
-EXPOSE 3000
+RUN echo "DB_HOST='db'" >> /app/.env
+RUN echo "DB_NAME='postgres'" >> /app/.env
+RUN echo "DB_USER='dockeruser'" >> /app/.env
+RUN echo "DB_PASSWORD='dockerpassword'" >> /app/.env
 
-# Set environment variables
-ENV DATABASE_URL="postgresql://user:password@host:port/database"
+EXPOSE 3333
+
+ENV DATABASE_URL="postgresql://dockeruser:dockerpassword@localhost:5432/postgres"
 
 # Run the application
 CMD ["npm", "start"]

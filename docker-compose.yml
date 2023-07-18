@@ -13,6 +13,8 @@ services:
     environment:
       POSTGRES_USER: dockeruser
       POSTGRES_PASSWORD: dockerpassword
-      POSTGRES_DB: dockertrivago
+      POSTGRES_DB: postgres
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
