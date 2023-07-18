@@ -19,7 +19,7 @@ const forbiddenNameKeywords = [
 export const itemValidator = [
     body('name')
         .isString()
-        .isLength({ min: 10, max: 255 }).withMessage("The value must be between 10 and 255 characters long")
+        .isLength({ min: 11, max: 255 }).withMessage("The value must be between 11 and 255 characters long")
         .custom(value => {
             forbiddenNameKeywords.filter(word => {
                 if (value.toString().toLowerCase().includes(word.toLowerCase())) {
