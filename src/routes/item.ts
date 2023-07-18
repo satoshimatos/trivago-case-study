@@ -102,8 +102,9 @@ router.delete('/:id', async (req: Request, res: Response) => {
                 "success": false,
                 "message": "Item not found"
             })
+        } else {
+            res.status(204).send()
         }
-        res.status(204).send()
     } catch (error) {
         res.status(400).json({
             "success": false,
