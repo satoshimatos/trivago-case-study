@@ -635,6 +635,65 @@ paths:
               example:
                 success: false
                 response: "Item not found"
+  /locations:
+    get:
+      summary: Retrieves all items
+      tags:
+        - Location Management
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  items:
+                    type: object
+                    properties:
+                      location_id:
+                        type: integer
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      country:
+                        type: string
+                      zip_code:
+                        type: string
+                      address:
+                        type: string
+              example:
+                success: true
+                items:
+                  - location_id: 1
+                    city: "Example City 1"
+                    state: "Example State 1"
+                    country: "Example Country 1"
+                    zip_code: "11111"
+                    address: "Example Address 1, Street 1"
+                  - location_id: 2
+                    city: "Example City 2"
+                    state: "Example State 2"
+                    country: "Example Country 2"
+                    zip_code: "22222"
+                    address: "Example Address 2, Street 2"
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: "Error message"
   /locations/{id}:
     get:
       summary: Retrieve location by ID
