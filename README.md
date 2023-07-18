@@ -27,13 +27,15 @@ Follow these steps to set up and run the project on your local machine:
 ```bash
 git clone git@github.com:satoshimatos/trivago-case-study.git
 ```
-2. Change into the project directory and create a `.env` file:
+2. Change into the project root directory and create a `.env` file:
 ```
-DB_HOST='localhost:5432'
-DB_NAME='dockertrivago'
+DB_HOST='db'
+DB_NAME='postgres'
 DB_USER='dockeruser'
 DB_PASSWORD='dockerpassword'
 ```
+The step above may be skipped because I decided it would be easier to just add these throwaway credentials to the Dockerfile. If it were really sensitive information, such as production credentials, I would take them out of the Dockerfile and require the use of the ``.env` file.
+
 3. Run docker-compose:
 ```
 docker-compose up --build
