@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import { AppDataSource } from "../data-source"
 import { Locations } from "../../entity/Locations"
+import { FindOneOptions } from "typeorm"
 
 export class LocationRepository {
     getOne = async (locationObj: object) : Promise<Locations> => {
@@ -31,6 +32,20 @@ export class LocationRepository {
             location.zip_code = validatedLocation['zip_code']
             location.address = validatedLocation['address']
             await AppDataSource.manager.save(location)
+            await AppDataSource.destroy()
+            return location
+        } catch (error) {
+            await AppDataSource.destroy()
+        }
+    }
+
+    getOneById = async (location_id: number) : Promise<Locations> => {
+        try {
+            await AppDataSource.initialize()
+            const options: FindOneOptions<Locations> = {
+                where: { location_id: location_id },
+            };
+            let location = await AppDataSource.manager.findOne(Locations, options)
             await AppDataSource.destroy()
             return location
         } catch (error) {
