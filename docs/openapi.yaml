@@ -9,6 +9,42 @@ paths:
       summary: Retrieves all items
       tags:
         - Item Management
+      parameters:
+        - name: rating
+          in: query
+          description: Search for items with specified rating
+          required: false
+          schema:
+            type: integer
+          examples:
+            4:
+              value: 4
+            5:
+              value: 5
+        - name: city
+          in: query
+          description: Search for items with specified city from its location
+          required: false
+          schema:
+            type: string
+          examples:
+            City 1:
+              value: "City%201"
+            Example City 3:
+              value: "Example%20City%203"
+        - name: reputation_badge
+          in: query
+          description: Search for items with specified reputation_badge
+          required: false
+          schema:
+            type: string
+          examples:
+            green:
+              value: "green"
+            yellow:
+              value: "yellow"
+            red:
+              value: "red"
       responses:
         '200':
           description: Successful response

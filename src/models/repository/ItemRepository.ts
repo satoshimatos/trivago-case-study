@@ -83,7 +83,7 @@ export class ItemRepository {
     }
 
     formatQueryParams = (query: object) : object => {
-        const allowedQueryParams = ["rating", "reputationBadge", "city"]
+        const allowedQueryParams = ["rating", "reputation_badge", "city"]
         Object.keys(query).forEach(key => {
             if (!allowedQueryParams.includes(key)) {
                 delete query[key];
