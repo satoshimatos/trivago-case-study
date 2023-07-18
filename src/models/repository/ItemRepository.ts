@@ -4,11 +4,15 @@ import { Items } from "../../entity/Items"
 import { DeleteResult, FindManyOptions, FindOneOptions } from "typeorm"
 
 export class ItemRepository {
-    getAll = async () : Promise<Items[]> => {
+    getAll = async (query?: object) : Promise<Items[]> => {
+        if (Object.keys(query).length != 0) {
+            query = this.formatQueryParams(query)
+        }
         try {
             await AppDataSource.initialize()
             const options: FindManyOptions<Items> = {
-                relations: ['location']
+                relations: ['location'],
+                where: query
             };
             let items = await AppDataSource.manager.find(Items, options)
             await AppDataSource.destroy()
@@ -18,12 +22,12 @@ export class ItemRepository {
         }
     }
 
-    getOne = async (item_id: number) : Promise<Items> => {
+    getOne = async (item_id: number, query?: object) : Promise<Items> => {
         try {
             await AppDataSource.initialize()
             const options: FindOneOptions<Items> = {
-                where: { item_id: item_id },
-                relations: ['location']
+                relations: ['location'],
+                where: { item_id: item_id }
             };
             let item = await AppDataSource.manager.findOne(Items, options)
             await AppDataSource.destroy()
@@ -76,5 +80,20 @@ export class ItemRepository {
             reputationBadge = 'green'
         }
         return reputationBadge
+    }
+
+    formatQueryParams = (query: object) : object => {
+        const allowedQueryParams = ["rating", "reputation_badge", "city"]
+        Object.keys(query).forEach(key => {
+            if (!allowedQueryParams.includes(key)) {
+                delete query[key];
+            }
+        });
+        if (query.hasOwnProperty('city')) {
+            let location = {city: query['city']}
+            query['location'] = location
+            delete query['city']
+        }
+        return query;
     }
 }
