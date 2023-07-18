@@ -18,6 +18,11 @@ While it was challenging I'm happy with the result and even more so for managing
 - OpenAPI (documentation)
 - Docker/Docker-compose
 
+## Requirements
+
+- Git
+- Docker / docker-compose
+
 ## Installation Instructions
 
 Follow these steps to set up and run the project on your local machine:
